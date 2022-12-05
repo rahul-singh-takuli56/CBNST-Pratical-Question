@@ -6,7 +6,6 @@ float fun(float x)
     return (x * x * x - 5 * x + 1);
     // return (x - cos(x));
 }
-
 int main()
 {
     float a, b;
