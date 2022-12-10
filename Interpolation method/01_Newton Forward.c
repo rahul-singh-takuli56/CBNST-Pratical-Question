@@ -4,6 +4,7 @@
 
 int main()
 {
+    
     float ax[MAXN+1], ay [MAXN+1], diff[MAXN+1][ORDER+1], nr=1.0, dr=1.0,x,p,h,yp;
     int n,i,j,k;
     printf("\nEnter the value of n:\n");
