@@ -1,48 +1,66 @@
+/C Program to Implement Gauss Elimination Method
 #include<stdio.h>
-int main()
+
+int n;
+//Converts the Augmented matrix to Upper Triangular Matrix form
+void convertToUpperTriangular(float a[][n+1],int n)
 {
-    int i,j,k,n;
-    float A[20][20],c,x[10],sum=0.0;
-    printf("\nEnter the order of matrix: ");
-    scanf("%d",&n);
-    printf("\nEnter the elements of augmented matrix row-wise:\n\n");  // enter last element of each row as constant values with sign(right side of equal to) 
-    for(i=1; i<=n; i++)
+    int i,j,x,y,k;
+    float ratio;
+    for( i=0;i<n;i++)
     {
-        for(j=1; j<=(n+1); j++)
-        {
-            printf("A[%d][%d] : ", i,j);
-            scanf("%f",&A[i][j]);
-        }
-    }
-    for(j=1; j<=n; j++) /* loop for the generation of upper triangular matrix*/
-    {
-        for(i=1; i<=n; i++)
-        {
-            if(i>j)
-            {
-                c=A[i][j]/A[j][j];
-                for(k=1; k<=n+1; k++)
-                {
-                    A[i][k]=A[i][k]-c*A[j][k];
-                }
-            }
-        }
-    }
-    x[n]=A[n][n+1]/A[n][n];
-    /* this loop is for backward substitution*/
-    for(i=n-1; i>=1; i--)
+      for(j=0;j<n;j++)
+      {
+         if(j>i)
+         {
+             ratio=a[j][i]/a[i][i];
+             for(k=0;k<n+1;k++)
+                a[j][k]=a[j][k] -( ratio * a[i][k]);        
+         } 
+      }
+     }
+}
+
+//Performs Back Substitution to find values of Unknowns
+void ApplyBackSubstitution(float a[][n+1],float value[],int n)
+{   
+    int i,j;
+    float sum;
+    value[n-1]=a[n-1][n]/a[n-1][n-1]; 
+
+    for(i=n-2;i>=0;i--)
     {
         sum=0;
-        for(j=i+1; j<=n; j++)
-        {
-            sum=sum+A[i][j]*x[j];
-        }
-        x[i]=(A[i][n+1]-sum)/A[i][i];
-    }
-    printf("\nThe solution is: \n");
-    for(i=1; i<=n; i++)
+        for(j=i+1;j<n;j++)
+            sum=sum+a[i][j]*value[j];  
+        value[i] = (a[i][n]-sum)/a[i][i];
+    } 
+}
+
+//prints the Value of Unknowns
+void print(float value[],int n)
+{  
+   int i;
+   printf("Values of unknowns are:\n");
+   for(i=0;i<n;i++)
+      printf("Value[%d]=%f\n",i,value[i]);
+   
+}
+int main()
+{
+    int i,j,k,x,y;
+    float sum,ratio;
+    printf("Enter no of Unknowns\n");
+    scanf("%d",&n);
+    float a[n][n+1],value[n];
+    printf("Enter the Augmented Matrix\n");
+    for(int i=0;i<n;i++)
     {
-        printf("\nx%d=%f\t",i,x[i]); /* x1, x2, x3 are the required solutions*/
+     for(int j=0;j<n+1;j++)
+        scanf("%f",&a[i][j]);
     }
-    return(0);
+    convertToUpperTriangular(a,n);
+    ApplyBackSubstitution(a,value,n);
+    print(value,n); 
+    return 0;
 }
